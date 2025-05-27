@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CreatorMerch - Signup</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('images.jpeg'); /* Replace with your image */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      margin-top: 60px;
+    }
+
+    .Creator {
+      color: crimson;
+    }
+
+    .Merch {
+      color: rgb(255, 145, 0);
+    }
+
+    #login-link {
+      font-size: 16px;
+      color: #444;
+    }
+
+    #login-link a {
+      color: rgb(0, 81, 255);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    #login-link a:hover {
+      text-decoration: underline;
+    }
+
+    #box2 {
+      margin-top: 30px;
+      font-size: 18px;
+    }
+
+    #field1 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    #field1 input {
+      width: 90%;
+      max-width: 320px;
+      height: 35px;
+      padding: 8px 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    #box3 button {
+      background-color: rgb(54, 54, 255);
+      font-size: larger;
+      border-radius: 7px;
+      margin-top: 30px;
+      padding: 12px;
+      color: aliceblue;
+      width: 100%;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    #box3 button:hover {
+      background-color: #929fa8;
+      transform: scale(0.98);
+    }
+
+    #box4 {
+      margin-top: 10px;
+    }
+
+    #box4 a {
+      color: rgb(0, 81, 255);
+      font-size: large;
+      text-decoration: none;
+    }
+
+    #box4 a:hover {
+      text-decoration: underline;
+    }
+
+    .or {
+      color: #6f7c86;
+      font-size: large;
+      display: block;
+      margin: 30px 0 10px;
+    }
+
+    #d-signup button {
+      background-color: #db4437;
+      font-size: medium;
+      border-radius: 7px;
+      padding: 10px;
+      color: white;
+      width: 100%;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    #d-signup button:hover {
+      background-color: #c1351d;
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="box1">
+      <h1><span class="Creator">Creator</span><span class="Merch">Merch</span></h1>
+      <div id="login-link">
+        <p>Already have an account? <a href="login.html">Login</a></p>
+      </div>
+    </div>
+
+    <div id="box2">
+      <b>Create an account</b>
+      <pre>Enter your details to Signup</pre>
+    </div>
+
+    <div id="field1">
+      <input type="text" id="firstName" placeholder="First Name" required />
+      <input type="text" id="lastName" placeholder="Last Name" required />
+      <input type="email" id="email" placeholder="email@domain.com" required />
+      <input type="password" id="password" placeholder="Password (0-9, Special Characters)" required />
+    </div>
+
+    <div id="box3">
+      <button type="button" id="signupBtn">Continue</button>
+    </div>
+
+    <div id="box4">
+      <u><a href="#">Forgot Password</a></u>
+    </div>
+
+    <span class="or">------------------or----------------</span>
+
+    <div id="d-signup">
+      <button type="button" onclick="window.open('https://google.com', '_blank')">Continue with Google</button>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCktaZDq0LYExdDFzWZTsBgVc4ME6ZMIwA",
+      authDomain: "creatormerch-1c1c4.firebaseapp.com",
+      projectId: "creatormerch-1c1c4",
+      storageBucket: "creatormerch-1c1c4.firebasestorage.app",
+      messagingSenderId: "313425057714",
+      appId: "1:313425057714:web:39d61506109a0e59b936ab",
+      measurementId: "G-3XQQHPT2WR"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert("Signup successful!");
+        window.location.href = "Homepage.html";
+      } catch (error) {
+        alert("Signup failed: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
