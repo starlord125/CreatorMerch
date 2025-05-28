@@ -8,7 +8,7 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-image: url('images.jpeg'); /* Replace with your image */
+      background-image: url('images.jpeg');
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
@@ -25,33 +25,18 @@
       margin-top: 60px;
     }
 
-    .Creator {
-      color: crimson;
-    }
+    .Creator { color: crimson; }
+    .Merch { color: rgb(255, 145, 0); }
 
-    .Merch {
-      color: rgb(255, 145, 0);
-    }
-
-    #login-link {
-      font-size: 16px;
-      color: #444;
-    }
-
+    #login-link { font-size: 16px; color: #444; }
     #login-link a {
       color: rgb(0, 81, 255);
       text-decoration: none;
       font-weight: bold;
     }
+    #login-link a:hover { text-decoration: underline; }
 
-    #login-link a:hover {
-      text-decoration: underline;
-    }
-
-    #box2 {
-      margin-top: 30px;
-      font-size: 18px;
-    }
+    #box2 { margin-top: 30px; font-size: 18px; }
 
     #field1 {
       display: flex;
@@ -68,7 +53,6 @@
       margin: 10px 0;
       border-radius: 8px;
       border: 1px solid #ccc;
-      box-sizing: border-box;
       font-size: 16px;
     }
 
@@ -103,30 +87,6 @@
     #box4 a:hover {
       text-decoration: underline;
     }
-
-    .or {
-      color: #6f7c86;
-      font-size: large;
-      display: block;
-      margin: 30px 0 10px;
-    }
-
-    #d-signup button {
-      background-color: #db4437;
-      font-size: medium;
-      border-radius: 7px;
-      padding: 10px;
-      color: white;
-      width: 100%;
-      cursor: pointer;
-      border: none;
-      transition: background-color 0.3s, transform 0.2s;
-    }
-
-    #d-signup button:hover {
-      background-color: #c1351d;
-      transform: scale(0.98);
-    }
   </style>
 </head>
 <body>
@@ -147,7 +107,7 @@
       <input type="text" id="firstName" placeholder="First Name" required />
       <input type="text" id="lastName" placeholder="Last Name" required />
       <input type="email" id="email" placeholder="email@domain.com" required />
-      <input type="password" id="password" placeholder="Password (0-9, Special Characters)" required />
+      <input type="password" id="password" placeholder="Password (min 6 chars, 1 number & symbol)" required />
     </div>
 
     <div id="box3">
@@ -157,15 +117,9 @@
     <div id="box4">
       <u><a href="#">Forgot Password</a></u>
     </div>
-
-    <span class="or">------------------or----------------</span>
-
-    <div id="d-signup">
-      <button type="button" onclick="window.open('https://google.com', '_blank')">Continue with Google</button>
-    </div>
   </div>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDK and Signup Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
@@ -175,20 +129,41 @@
       apiKey: "AIzaSyCktaZDq0LYExdDFzWZTsBgVc4ME6ZMIwA",
       authDomain: "creatormerch-1c1c4.firebaseapp.com",
       projectId: "creatormerch-1c1c4",
-      storageBucket: "creatormerch-1c1c4.firebasestorage.app",
+      storageBucket: "creatormerch-1c1c4.appspot.com",
       messagingSenderId: "313425057714",
       appId: "1:313425057714:web:39d61506109a0e59b936ab",
       measurementId: "G-3XQQHPT2WR"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const auth = getAuth(app);
 
     document.getElementById("signupBtn").addEventListener("click", async () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      // Name validation (letters, accents, hyphens, apostrophes allowed, min 2 characters)
+      const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]{2,}$/;
+
+      if (!nameRegex.test(firstName)) {
+        alert("Invalid first name. Must be at least 2 characters, only letters, hyphens, accents allowed.");
+        return;
+      }
+
+      if (!nameRegex.test(lastName)) {
+        alert("Invalid last name. Must be at least 2 characters, only letters, hyphens, accents allowed.");
+        return;
+      }
+
+      // Password validation
+      const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/;
+      if (!passwordRegex.test(password)) {
+        alert("Password must be at least 6 characters and include a number and a special character.");
+        return;
+      }
 
       try {
         await createUserWithEmailAndPassword(auth, email, password);
